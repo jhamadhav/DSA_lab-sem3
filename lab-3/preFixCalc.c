@@ -3,15 +3,15 @@
 #include "operatorUtil.c"
 #include "stack.c"
 
-double calcPostFix(char s[]) {
+double calcPreFix(char s[]) {
     Stack* arr;
     arr = stackInitialize();
 
-    for (int i = 0;i < strlen(s);i++) {
+    for (int i = strlen(s) - 1;i >= 0;i--) {
 
         if (isOperator(s[i]) == 1) {
-            double st = pop(arr);
             double ft = pop(arr);
+            double st = pop(arr);
 
             push(arr, getAns(ft, st, s[i]));
         }
@@ -24,10 +24,10 @@ double calcPostFix(char s[]) {
 
 // int main() {
 
-//     char str[] = "02-3+";
+//     char str[] = "-+7*45+20";
 
-//     printf("\nPostfix expression: %s", str);
+//     printf("\nPrefix expression: %s", str);
 
-//     printf("\nEvaluation is: %f", calcPostFix(str));
+//     printf("\nEvaluation is: %f \n\n", calcPreFix(str));
 //     return 0;
 // }

@@ -52,9 +52,13 @@ pop(Stack* sp)
     if (sp->top <= -1)
     {
         error("StackUnderflow");
-        return '0';
+        return 0;
     }
     return sp->arr[sp->top--];
+}
+
+int isEmpty(Stack* sp) {
+    return sp->top == -1;
 }
 
 // int
@@ -63,21 +67,9 @@ pop(Stack* sp)
 //     Stack* sp;
 //     sp = stackInitialize();
 
-//     peek(sp);
-//     pop(sp);
-
-//     for (int i = 0; i < 10; i++)
-//     {
-//         push(sp, i);
-//         printf("peek: %f\n", peek(sp));
-//     }
-
-//     printf("\nPOP 4 elements\n");
-//     for (int i = 0; i < 4; i++)
-//     {
-//         pop(sp);
-//         printf("peek: %f\n", peek(sp));
-//     }
+//     push(sp, '+');
+//     char c = (char)pop(sp);
+//     printf("peek: %c", c);
 
 //     return 0;
 // }
