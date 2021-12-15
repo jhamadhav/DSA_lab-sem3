@@ -22,12 +22,12 @@ double calcPreFix(char s[]) {
     return peek(arr);
 }
 
-// int main() {
+int main() {
 
-//     char str[] = "-+7*45+20";
+    char str[] = "+2*34";
 
-//     printf("\nPrefix expression: %s", str);
+    printf("\nPrefix expression: %s", str);
 
-//     printf("\nEvaluation is: %f \n\n", calcPreFix(str));
-//     return 0;
-// }
+    printf("\nEvaluation is: %f \n\n", calcPreFix(str));
+    return 0;
+}

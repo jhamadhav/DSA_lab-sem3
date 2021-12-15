@@ -41,7 +41,7 @@ peek(Stack* sp)
     if (sp->top <= -1)
     {
         error("StackUnderflow, can't peek any element");
-        return '0';
+        return -1;
     }
     return sp->arr[sp->top];
 }

@@ -3,15 +3,22 @@
 #include "operatorUtil.c"
 #include "stack.c"
 
-char* infixToPostfix(char s[]) {
+char* infixToPrefix(char s[]) {
     Stack* arr;
     arr = stackInitialize();
 
     char* res = (char*)malloc(1000 * sizeof(int));;
     int k = 0;
 
+    strrev(s);
     for (int i = 0;i < strlen(s);i++) {
 
+        if (s[i] == ')') {
+            s[i] = '(';
+        }
+        else if (s[i] == '(') {
+            s[i] = ')';
+        }
         if (s[i] == ' ') {
             continue;
         }
@@ -35,27 +42,43 @@ char* infixToPostfix(char s[]) {
 
             int curr = operatorOrder(s[i]);
 
-            while (curr <= prev && prev != -1 && isEmpty(arr) == 0) {
-                if ((char)peek(arr) == '(') {
-                    break;
-                }
-                char c = (char)pop(arr);
-                res[k++] = c;
-                if (isEmpty(arr) == 0 && (char)peek(arr) != '(') {
-                    prev = operatorOrder((char)peek(arr));
+            if (curr <= prev && prev != -1) {
+
+                int b = 0;
+                if (s[i] == '^') {
+                    b = curr <= prev;
                 }
                 else {
-                    break;
+                    b = curr < prev;
+                }
+                while (b && prev != -1 && isEmpty(arr) != 1) {
+                    if ((char)peek(arr) == '(') {
+                        break;
+                    }
+                    char c = (char)pop(arr);
+                    res[k++] = c;
+                    if (isEmpty(arr) == 0 && (char)peek(arr) != '(') {
+                        prev = operatorOrder((char)peek(arr));
+                    }
+                    else {
+                        break;
+                    }
+
+                    if (s[i] == '^') {
+                        b = curr <= prev;
+                    }
+                    else {
+                        b = curr < prev;
+                    }
                 }
             }
-
             push(arr, (char)s[i]);
         }
         else if ((char)s[i] == '(') {
             push(arr, '(');
         }
         else if ((char)s[i] == ')') {
-            while ((char)peek(arr) != '(' || isEmpty(arr)) {
+            while ((char)peek(arr) != '(') {
                 char c = (char)pop(arr);
                 res[k++] = c;
             }
@@ -78,7 +101,8 @@ int main() {
 
     printf("\nInfix expression is: %s", str);
 
-    char* res = infixToPostfix(str);
-    printf("\nConversion to Postfix is: %s", res);
+    char* res = infixToPrefix(str);
+
+    printf("\nConversion to Prefix is: %s", strrev(res));
 
 }
