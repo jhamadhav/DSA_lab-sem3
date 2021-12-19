@@ -103,6 +103,6 @@ int main() {
 
     char* res = infixToPrefix(str);
 
-    printf("\nConversion to Prefix is: %s", strrev(res));
+    printf("\nConversion to Prefix is: %s\n\n", strrev(res));
 
 }

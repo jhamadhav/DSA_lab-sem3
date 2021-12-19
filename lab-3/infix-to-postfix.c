@@ -79,6 +79,6 @@ int main() {
     printf("\nInfix expression is: %s", str);
 
     char* res = infixToPostfix(str);
-    printf("\nConversion to Postfix is: %s", res);
+    printf("\nConversion to Postfix is: %s\n\n", res);
 
 }
