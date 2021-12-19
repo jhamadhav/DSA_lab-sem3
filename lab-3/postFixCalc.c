@@ -22,12 +22,12 @@ double calcPostFix(char s[]) {
     return peek(arr);
 }
 
-// int main() {
+int main() {
 
-//     char str[] = "02-3+";
+    char str[] = "02-3+";
 
-//     printf("\nPostfix expression: %s", str);
+    printf("\nPostfix expression: %s", str);
 
-//     printf("\nEvaluation is: %f", calcPostFix(str));
-//     return 0;
-// }
+    printf("\nEvaluation is: %f", calcPostFix(str));
+    return 0;
+}
