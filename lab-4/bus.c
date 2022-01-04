@@ -1,78 +1,139 @@
 #include<stdio.h>
 #include <stdlib.h>
-int front = -1;
-int rear = -1;
-int* ptr;
-int max = 5;
-void enque();
-void show();
-void deque();
-void main()
-{
-    int case1;
-    ptr = (int*)calloc(max, sizeof(int));
 
-    while (1)
-    {
-        printf("1.Enqueue Operation\n");
-        printf("2.Dequeue Operation\n");
-        printf("3.Display the Queue\n");
-        printf("4.Exit\n");
-        printf("Enter your choice of operations : ");
-        scanf("%d", &case1);
-        switch (case1)
-        {
-        case 1:
-            enque();
-            break;
-        case 2:
-            deque();
-            break;
-        case 3:
-            show();
-            break;
+void err(char s[]) {
+    printf("\nERROR: %s!!!\n", s);
+}
 
+typedef struct {
+    int front;
+    int rear;
+    int* arr;
+    int maxSize;
+}Queue;
+
+int count = 0;
+Queue* initQ(int n) {
+    Queue* temp = (Queue*)malloc(sizeof(Queue));
+    temp->maxSize = n;
+    temp->front = -1;
+    temp->rear = -1;
+    temp->arr = (int*)malloc(temp->maxSize * sizeof(int));
+    return temp;
+}
+
+void displayBus(Queue* l, Queue* r) {
+    printf("\nExit ");
+    if (l->front != -1 && l->rear != -1) {
+        for (int i = l->front;i < l->rear + 1;i++) {
+            printf("p%d ", l->arr[i]);
         }
     }
 
-}
-void enque() {
-    int sit;
-    if (rear == max - 1) {
-        printf("*****overFLOW*****\n");
+    printf(" Entry ");
+
+    if (r->front != -1 && r->rear != -1) {
+        for (int i = r->rear;i >= r->front;i--) {
+            printf("p%d ", r->arr[i]);
+        }
     }
-    else if (front == -1 && rear == -1)
-    {
-        front = 0;
-        rear = 0;
-        printf("Enter the person you want to sit : ");
-        scanf("%d", &sit);
-        ptr[rear] = sit;
+    printf(" Exit\n");
+}
+
+void pushElem(Queue* q) {
+    if (q->rear == q->maxSize - 1) {
+        err("Overflow");
+        return;
+    }
+    q->arr[++(q->rear)] = ++count;
+    if (q->front == -1) {
+        (q->front)++;
+    }
+}
+
+void leftExit(Queue* l, Queue* r) {
+    if (l->rear == -1 && r->rear == -1) {
+        err("Underflow");
+        return;
+    }
+
+    if (l->rear != -1 && l->front <= l->rear) {
+        ++(l->front);
+    }
+    else if (r->rear != -1 && r->front <= r->rear) {
+        --(r->rear);
     }
     else {
-        rear = rear + 1;
-        printf("Enter the person you want to sit : ");
-        scanf("%d", &sit);
-        ptr[rear] = sit;
+        err("Underflow");
+        return;
     }
 
 }
-void show() {
-    for (int i = 0; i <= rear; i++)
-    {
-        printf("%d ", ptr[i]);
-    }
-    printf("\n");
 
-}
-void deque() {
-    if ((front == -1 && rear == -1) || front > rear)
-    {
-        printf("****Underflow****\n");
+void rightExit(Queue* l, Queue* r) {
+    if (l->rear == -1 && r->rear == -1) {
+        err("Underflow");
+        return;
+    }
+
+    if (r->rear != -1 && r->front <= r->rear) {
+        ++(r->front);
+    }
+    else if (l->rear != -1 && l->front <= l->rear) {
+        --(l->rear);
     }
     else {
-        ptr[front] = 0;
-        front = front + 1;
+        err("Underflow");
+        return;
     }
+}
 
+int main(void) {
+    Queue* leftBus = initQ(15);
+    Queue* rightBus = initQ(15);
+
+    int choice = 0;
+    do {
+        printf("\n0. Enter 0 to exit!");
+        printf("\n1. Add passenger and sit in the front.");
+        printf("\n2. Add passenger and sit in the back.");
+        printf("\n3. Exit passenger from the front.");
+        printf("\n4. Exit passenger from the back.");
+        printf("\n5. Display Bus.");
+
+        printf("\nYour choice: ");
+        scanf("%d", &choice);
+
+        int inp, src;
+        switch (choice) {
+        case 0:
+            printf("\n\nExit...!\n\n");
+            break;
+        case 1:
+            pushElem(leftBus);
+            printf("\n\nPassenger added!!\n");
+            break;
+        case 2:
+            pushElem(rightBus);
+            printf("\n\nPassenger added!!\n");
+            break;
+        case 3:
+            leftExit(leftBus, rightBus);
+            printf("\n\nPassenger exited from front.\n");
+            break;
+        case 4:
+            rightExit(leftBus, rightBus);
+            printf("\n\nPassenger exited from front.\n");
+            break;
+        case 5:
+            printf("\n");
+            displayBus(leftBus, rightBus);
+            break;
+        default:
+            printf("\nERROR: Invalid choice!!!");
+            break;
+        }
+    } while (choice != 0);
+
+    return 0;
 }
