@@ -143,6 +143,19 @@ void reverseList(struct LinkedNode** head, struct LinkedNode** tail) {
     *head = curr;
 }
 
+int getLen(struct LinkedNode** head) {
+    int count = 0;
+    if (*head == NULL) return count;
+
+    struct LinkedNode* temp = *head;
+
+    while (temp != NULL) {
+        ++count;
+        temp = temp->next;
+    }
+    return count;
+}
+
 int main() {
 
     struct LinkedNode** head = (struct LinkedNode**)malloc(sizeof(struct LinkedNode*));
@@ -163,6 +176,7 @@ int main() {
         printf("\n8. Pop the tail element.");
         printf("\n9. Search and delete.");
         printf("\n10. Reverse the list.");
+        printf("\n11. Get length of the list.");
 
         printf("\nYour choice: ");
         scanf("%d", &choice);
@@ -226,6 +240,10 @@ int main() {
             break;
         case 10:
             reverseList(head, tail);
+            printf("\n");
+            break;
+        case 11:
+            printf("\n\nLength of the list: %d", getLen(head));
             printf("\n");
             break;
         default:
