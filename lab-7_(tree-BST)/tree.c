@@ -110,6 +110,61 @@ int countAllLeaf(struct TreeNode** root) {
     return count;
 }
 
+int max(int a, int b) {
+    return (a > b) ? a : b;
+}
+
+int height(struct TreeNode* node, int level) {
+    if (node == NULL) return level;
+    return max(height(node->left, level + 1), height(node->right, level + 1));
+}
+
+void print2dArray(int m, int n, int arr[m][n]) {
+    printf("\n");
+    for (int i = 0;i < m;i++) {
+        printf("\t");
+        for (int j = 0;j < n;j++) {
+            if (arr[i][j] == 0) {
+                printf("  ");
+                continue;
+            }
+            printf("%d ", arr[i][j]);
+        }
+        printf("\n");
+    }
+    printf("\n");
+}
+
+void preOrderPrint(struct TreeNode* node, int start, int end, int level, int m, int n, int arr[m][n]) {
+    if (node == NULL) return;
+
+    int mid = start + (end - start) / 2;
+    arr[level][mid] = node->val;
+
+    preOrderPrint(node->left, start, mid, level + 1, m, n, arr);
+    preOrderPrint(node->right, mid + 1, end, level + 1, m, n, arr);
+}
+
+void printTree(struct TreeNode* root) {
+
+    if (root == NULL) return;
+
+    int h = height(root, 0);
+    int n = pow(2, h) - 1;
+    // printf("Height: %d\n", h);
+    // printf("nodes: %d\n", n);
+
+    int arr[h][n];
+    for (int i = 0;i < h;i++) {
+        for (int j = 0;j < n;j++) {
+            arr[i][j] = 0;
+        }
+    }
+    preOrderPrint(root, 0, n, 0, h, n, arr);
+
+    print2dArray(h, n, arr);
+}
+
 int main(void) {
 
     struct TreeNode** root = (struct TreeNode**)malloc(sizeof(struct TreeNode*));
@@ -125,6 +180,7 @@ int main(void) {
         printf("\n5. Count all nodes.");
         printf("\n6. Count leafs");
         printf("\n7. Search number in BST");
+        printf("\n8. Print tree.");
 
         printf("\nYour choice: ");
         scanf("%d", &choice);
@@ -171,6 +227,10 @@ int main(void) {
                 printf("\nNumber does exists!!");
             }
             printf("\n\n");
+            break;
+        case 8:
+            printf("\nHere's the tree: ");
+            printTree(*root);
             break;
         default:
             printf("\nERROR: Invalid choice!!!");
